@@ -398,9 +398,9 @@
   </p>
 </footer>
 
-<!-- Music - Auto play -->
+<!-- Music - Auto play from GitHub -->
 <audio id="bgMusic" loop preload="auto" autoplay>
-  <source src="https://drive.google.com/uc?export=download&id=1zKmuUfvymbUgHXCLccpCvxqO3_htWftj" type="audio/mpeg">
+  <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <!-- Lucky Overlay -->
@@ -416,20 +416,16 @@
   /* === Music Auto Play === */
   const bgMusic = document.getElementById('bgMusic');
   bgMusic.volume = 0.5;
-  // Try autoplay immediately
   bgMusic.play().catch(()=>{});
-  // Fallback: play on any user interaction
   function forcePlay(){
     bgMusic.play().catch(()=>{});
     document.removeEventListener('click',forcePlay);
     document.removeEventListener('touchstart',forcePlay);
     document.removeEventListener('scroll',forcePlay);
-    document.removeEventListener('keydown',forcePlay);
   }
   document.addEventListener('click',forcePlay);
   document.addEventListener('touchstart',forcePlay);
   document.addEventListener('scroll',forcePlay);
-  document.addEventListener('keydown',forcePlay);
 
   /* === Effects === */
   for(let i=0;i<24;i++){const p=document.createElement('div');p.className='petal';p.style.left=Math.random()*100+'%';p.style.animationDuration=(5+Math.random()*8)+'s';p.style.animationDelay=Math.random()*10+'s';const s=(7+Math.random()*9)+'px';p.style.width=p.style.height=s;document.body.appendChild(p)}
