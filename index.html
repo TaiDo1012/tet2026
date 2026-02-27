@@ -17,7 +17,7 @@
     --dark: #1A0A0A;
   }
 
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
   html, body {
     font-family: 'Be Vietnam Pro', sans-serif;
@@ -25,10 +25,8 @@
     overflow-x: hidden;
     width: 100%; min-height: 100vh;
     margin: 0; padding: 0;
-    -webkit-text-size-adjust: 100%;
   }
 
-  /* === BACKGROUND === */
   .bg-layer {
     position: fixed; inset: 0; z-index: 0;
     background:
@@ -38,45 +36,25 @@
       linear-gradient(180deg, #1A0505 0%, #2D0A0A 40%, #1A0505 100%);
   }
 
-  /* === TOP NAV === */
-  .top-nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 24px;
-    background: linear-gradient(180deg, rgba(10,2,2,0.96) 0%, rgba(10,2,2,0.7) 80%, transparent 100%);
-    backdrop-filter: blur(14px);
+  /* === LANG TOGGLE === */
+  .lang-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 60;
+    display: flex; border-radius: 50px; overflow: hidden;
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 2px 15px rgba(0,0,0,.4);
   }
-  .nav-logo-group { display: flex; align-items: center; gap: 12px; }
-  .nav-logo {
-    height: 46px; width: auto;
-    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
-    transition: transform 0.3s;
-  }
-  .nav-logo:hover { transform: scale(1.05); }
-  .nav-brand { display: flex; flex-direction: column; }
-  .nav-brand .group-label {
-    color: rgba(255,215,0,0.7); font-size: 0.55rem;
-    letter-spacing: 2px; text-transform: uppercase;
-  }
-  .nav-brand .brand-name {
-    color: #fff; font-weight: 900; font-size: 1rem;
-    letter-spacing: 1px; line-height: 1.2;
-  }
-  .nav-brand .brand-name span { color: var(--gold); }
-  .nav-home-btn {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: linear-gradient(135deg, var(--red), var(--deep-red));
-    color: var(--gold); border: 1.5px solid var(--gold);
-    padding: 8px 20px; font-size: 0.82rem; font-weight: 700;
+  .lang-btn {
+    padding: 7px 16px; font-size: .78rem; font-weight: 700;
     font-family: 'Be Vietnam Pro', sans-serif;
-    border-radius: 50px; cursor: pointer; text-decoration: none;
-    transition: all 0.3s ease; white-space: nowrap;
+    cursor: pointer; border: none; transition: all .3s;
+    color: var(--gold); background: rgba(139,0,0,.6);
+    backdrop-filter: blur(10px);
   }
-  .nav-home-btn:hover {
-    transform: scale(1.06);
-    box-shadow: 0 0 22px rgba(255,215,0,0.35);
+  .lang-btn.active {
+    background: linear-gradient(135deg, var(--red), var(--deep-red));
+    color: #fff;
   }
-  .nav-home-btn svg { width: 15px; height: 15px; fill: var(--gold); }
+  .lang-btn:hover { opacity: .85; }
 
   /* === LANTERNS === */
   .lantern-container { position: fixed; top: -18px; z-index: 2; pointer-events: none; width: 100%; }
@@ -103,7 +81,7 @@
     content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
     width: 10px; height: 10px; background: var(--gold); border-radius: 0 0 50% 50%; opacity: .8;
   }
-  .lantern:nth-child(1) { position: absolute; left: 4%; animation-delay: 0s; }
+  .lantern:nth-child(1) { position: absolute; left: 4%; }
   .lantern:nth-child(2) { position: absolute; left: 22%; animation-delay: .5s; }
   .lantern:nth-child(3) { position: absolute; right: 22%; animation-delay: 1s; }
   .lantern:nth-child(4) { position: absolute; right: 4%; animation-delay: 1.5s; }
@@ -305,7 +283,6 @@
   .click-burst { position: fixed; pointer-events: none; z-index: 50; }
   .burst-particle { position: absolute; border-radius: 50%; }
 
-  /* === RESPONSIVE === */
   @media (max-width: 600px) {
     .hero { padding: 20px 12px 22px; }
     .hero-logo { width: clamp(110px, 38vw, 180px); }
@@ -313,6 +290,8 @@
     .wishes-grid { grid-template-columns: 1fr; gap: 10px; }
     .lantern-body { width: 36px; height: 46px; }
     .lantern-body::before { font-size: 15px; }
+    .lang-toggle { top: 10px; right: 10px; }
+    .lang-btn { padding: 5px 12px; font-size: .7rem; }
   }
 </style>
 </head>
@@ -320,7 +299,11 @@
 
 <div class="bg-layer"></div>
 
-<!-- Nav removed -->
+<!-- Language Toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn active" id="btnVI" onclick="setLang('vi')">🇻🇳 VI</button>
+  <button class="lang-btn" id="btnEN" onclick="setLang('en')">🇬🇧 EN</button>
+</div>
 
 <!-- Lanterns -->
 <div class="lantern-container">
@@ -332,30 +315,28 @@
 
 <!-- HERO -->
 <section class="hero">
-  <img
-    src="https://lh3.googleusercontent.com/d/1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0"
-    alt="Tập Đoàn Đại Dũng - DDC Group"
-    class="hero-logo"
-    onerror="this.src='https://drive.google.com/uc?export=view&id=1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0'"
-  >
+  <img src="https://lh3.googleusercontent.com/d/1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0" alt="Tập Đoàn Đại Dũng - DDC Group" class="hero-logo" onerror="this.src='https://drive.google.com/uc?export=view&id=1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0'">
+
   <div class="frame">
-    <div class="subtitle-top">✦ Xuân Bính Ngọ ✦</div>
+    <div class="subtitle-top" data-vi="✦ Xuân Bính Ngọ ✦" data-en="✦ Spring of the Horse ✦">✦ Xuân Bính Ngọ ✦</div>
     <div class="year-display">2026</div>
-    <h1 class="main-title">Chúc Mừng Năm Mới</h1>
-    <div class="zodiac">Năm Bính Ngọ <span class="horse-emoji">🐴</span></div>
+    <h1 class="main-title" data-vi="Chúc Mừng Năm Mới" data-en="Happy New Year">Chúc Mừng Năm Mới</h1>
+    <div class="zodiac" data-vi='Năm Bính Ngọ <span class="horse-emoji">🐴</span>' data-en='Year of the Horse <span class="horse-emoji">🐴</span>'>Năm Bính Ngọ <span class="horse-emoji">🐴</span></div>
     <div class="divider"></div>
-    <p class="wish-text">
+    <p class="wish-text" data-vi="Tân xuân vạn sự như ý<br>Năm mới phúc lộc đầy nhà<br>An khang thịnh vượng, vui vẻ cả năm!" data-en="Wishing you a new year full of blessings<br>May prosperity fill your home<br>Peace, success, and happiness all year long!">
       Tân xuân vạn sự như ý<br>
       Năm mới phúc lộc đầy nhà<br>
       An khang thịnh vượng, vui vẻ cả năm!
     </p>
+
     <div class="wishes-grid">
-      <div class="wish-card"><div class="icon">💰</div><div class="label">Phát Tài Phát Lộc</div><div class="desc">Tiền vào như nước</div></div>
-      <div class="wish-card"><div class="icon">❤️</div><div class="label">Sức Khỏe Dồi Dào</div><div class="desc">Bình an mỗi ngày</div></div>
-      <div class="wish-card"><div class="icon">🎓</div><div class="label">Công Thành Danh Toại</div><div class="desc">Sự nghiệp hanh thông</div></div>
-      <div class="wish-card"><div class="icon">🏡</div><div class="label">Gia Đình Hạnh Phúc</div><div class="desc">Sum vầy ấm áp</div></div>
+      <div class="wish-card"><div class="icon">💰</div><div class="label" data-vi="Phát Tài Phát Lộc" data-en="Wealth & Prosperity">Phát Tài Phát Lộc</div><div class="desc" data-vi="Tiền vào như nước" data-en="Abundant fortune">Tiền vào như nước</div></div>
+      <div class="wish-card"><div class="icon">❤️</div><div class="label" data-vi="Sức Khỏe Dồi Dào" data-en="Good Health">Sức Khỏe Dồi Dào</div><div class="desc" data-vi="Bình an mỗi ngày" data-en="Peace every day">Bình an mỗi ngày</div></div>
+      <div class="wish-card"><div class="icon">🎓</div><div class="label" data-vi="Công Thành Danh Toại" data-en="Career Success">Công Thành Danh Toại</div><div class="desc" data-vi="Sự nghiệp hanh thông" data-en="Smooth career path">Sự nghiệp hanh thông</div></div>
+      <div class="wish-card"><div class="icon">🏡</div><div class="label" data-vi="Gia Đình Hạnh Phúc" data-en="Family Happiness">Gia Đình Hạnh Phúc</div><div class="desc" data-vi="Sum vầy ấm áp" data-en="Warm togetherness">Sum vầy ấm áp</div></div>
     </div>
-    <button class="envelope-btn" onclick="openEnvelope()">🧧 Mở Lì Xì May Mắn</button>
+
+    <button class="envelope-btn" onclick="openEnvelope()" data-vi="🧧 Mở Lì Xì May Mắn" data-en="🧧 Open Lucky Envelope">🧧 Mở Lì Xì May Mắn</button>
   </div>
 </section>
 
@@ -364,8 +345,8 @@
   <div class="shipyard-card">
     <div class="ship-icon">🚢⚓</div>
     <h3>DAI DUNG SHIPYARD</h3>
-    <div class="sub">Thành viên Tập Đoàn Kết Cấu Thép Đại Dũng — DDC Group</div>
-    <p class="message">
+    <div class="sub" data-vi="Thành viên Tập Đoàn Kết Cấu Thép Đại Dũng — DDC Group" data-en="Member of Dai Dung Steel Structure Corporation — DDC Group">Thành viên Tập Đoàn Kết Cấu Thép Đại Dũng — DDC Group</div>
+    <p class="message" data-vi='Ban Lãnh đạo và toàn thể CBCNV<br><strong style="color:var(--gold)">Dai Dung Shipyard</strong><br>kính chúc Quý Đối tác, Khách hàng<br>và Gia đình một năm mới<br><br><strong style="color:var(--gold);font-size:1.15rem">AN KHANG — THỊNH VƯỢNG — HẠNH PHÚC</strong>' data-en='The Board of Directors and all employees of<br><strong style="color:var(--gold)">Dai Dung Shipyard</strong><br>wish our valued Partners, Customers<br>and Families a new year of<br><br><strong style="color:var(--gold);font-size:1.15rem">PROSPERITY — SUCCESS — HAPPINESS</strong>'>
       Ban Lãnh đạo và toàn thể CBCNV<br>
       <strong style="color:var(--gold)">Dai Dung Shipyard</strong><br>
       kính chúc Quý Đối tác, Khách hàng<br>
@@ -377,29 +358,24 @@
 
 <!-- Câu đối -->
 <section class="scroll-section">
-  <div class="couplet">
-    <p>🌸 Tân niên hạnh phúc bình an đến 🌸</p>
-    <p>🌸 Xuân mới vinh hoa phú quý về 🌸</p>
+  <div class="couplet" id="coupletSection">
+    <p data-vi="🌸 Tân niên hạnh phúc bình an đến 🌸" data-en="🌸 New year brings peace and happiness 🌸">🌸 Tân niên hạnh phúc bình an đến 🌸</p>
+    <p data-vi="🌸 Xuân mới vinh hoa phú quý về 🌸" data-en="🌸 Spring brings glory and prosperity 🌸">🌸 Xuân mới vinh hoa phú quý về 🌸</p>
   </div>
 </section>
 
 <!-- Footer -->
 <footer class="footer">
-  <img
-    src="https://lh3.googleusercontent.com/d/1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0"
-    alt="DDC Logo"
-    class="footer-logo"
-    onerror="this.style.display='none'"
-  >
+  <img src="https://lh3.googleusercontent.com/d/1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0" alt="DDC Logo" class="footer-logo" onerror="this.style.display='none'">
   <p>
-    🏮 Chúc Mừng Năm Mới Bính Ngọ 2026 🏮<br>
-    <strong style="color:var(--warm-gold)">Dai Dung Shipyard</strong> — Tập Đoàn Kết Cấu Thép Đại Dũng<br>
+    <span data-vi="🏮 Chúc Mừng Năm Mới Bính Ngọ 2026 🏮" data-en="🏮 Happy Lunar New Year 2026 🏮">🏮 Chúc Mừng Năm Mới Bính Ngọ 2026 🏮</span><br>
+    <strong style="color:var(--warm-gold)">Dai Dung Shipyard</strong> — <span data-vi="Tập Đoàn Kết Cấu Thép Đại Dũng" data-en="Dai Dung Steel Structure Corporation">Tập Đoàn Kết Cấu Thép Đại Dũng</span><br>
     <a href="https://daidung.com" target="_blank">daidung.com</a>
   </p>
 </footer>
 
-<!-- Music - Auto play from GitHub -->
-<audio id="bgMusic" loop preload="auto" autoplay>
+<!-- Music -->
+<audio id="bgMusic" loop preload="auto">
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
@@ -413,19 +389,29 @@
 </div>
 
 <script>
-  /* === Music Auto Play === */
+  /* === LANGUAGE SYSTEM === */
+  let currentLang = 'vi';
+
+  function setLang(lang) {
+    currentLang = lang;
+    document.getElementById('btnVI').classList.toggle('active', lang==='vi');
+    document.getElementById('btnEN').classList.toggle('active', lang==='en');
+    document.querySelectorAll('[data-vi]').forEach(el => {
+      el.innerHTML = el.getAttribute('data-' + lang);
+    });
+  }
+
+  /* === MUSIC (play on first interaction) === */
   const bgMusic = document.getElementById('bgMusic');
   bgMusic.volume = 0.5;
-  bgMusic.play().catch(()=>{});
-  function forcePlay(){
-    bgMusic.play().catch(()=>{});
-    document.removeEventListener('click',forcePlay);
-    document.removeEventListener('touchstart',forcePlay);
-    document.removeEventListener('scroll',forcePlay);
+  let musicStarted = false;
+  function startMusic() {
+    if (musicStarted) return;
+    bgMusic.play().then(() => { musicStarted = true; }).catch(()=>{});
   }
-  document.addEventListener('click',forcePlay);
-  document.addEventListener('touchstart',forcePlay);
-  document.addEventListener('scroll',forcePlay);
+  document.addEventListener('click', startMusic);
+  document.addEventListener('touchstart', startMusic);
+  document.addEventListener('scroll', startMusic);
 
   /* === Effects === */
   for(let i=0;i<24;i++){const p=document.createElement('div');p.className='petal';p.style.left=Math.random()*100+'%';p.style.animationDuration=(5+Math.random()*8)+'s';p.style.animationDelay=Math.random()*10+'s';const s=(7+Math.random()*9)+'px';p.style.width=p.style.height=s;document.body.appendChild(p)}
@@ -452,7 +438,6 @@
       ],{duration:800+Math.random()*700,easing:'ease-out',fill:'forwards'});
       fw.appendChild(p);
     }
-    // Add sparkle trail particles
     for(let i=0;i<8;i++){
       const t=document.createElement('div');
       const tsz=1.5+Math.random()*2;
@@ -466,9 +451,7 @@
     }
     document.body.appendChild(fw);setTimeout(()=>fw.remove(),2200);
   }
-  // Grand opening burst
   for(let i=0;i<12;i++) setTimeout(launchFirework,i*180);
-  // Continuous rapid fireworks
   setInterval(()=>{
     launchFirework();
     setTimeout(launchFirework,200);
@@ -492,7 +475,7 @@
   });
 
   /* === Lucky Envelope === */
-  const msgs=[
+  const msgsVI=[
     '🎊 Dai Dung Shipyard\nchúc bạn năm mới\nTấn Tài Tấn Lộc! 💰',
     '🌟 Vạn sự như ý, triệu sự như mơ!\nCầu gì được nấy! ✨',
     '🏮 An khang thịnh vượng,\nphúc lộc song toàn! 🎆',
@@ -503,7 +486,19 @@
     '🚢 Thuận buồm xuôi gió,\nDai Dung Shipyard\nchinh phục đại dương! ⚓',
     '🌺 Xuân sang phú quý,\nĐại Dũng rạng ngời năm châu! 🎆',
   ];
+  const msgsEN=[
+    '🎊 Dai Dung Shipyard\nwishes you a new year of\nGreat Fortune! 💰',
+    '🌟 May all your dreams come true!\nEndless blessings ahead! ✨',
+    '🏮 Prosperity and abundance,\ndouble fortune and luck! 🎆',
+    '💫 New year, new promotions,\nbonuses overflowing! 🎉',
+    '❤️ Abundant health,\nhappiness all year round! 🌸',
+    '🧧 Lucky money fills your wallet,\ngood fortune fills your home! 🎊',
+    '🐴 Success gallops to you!\nDai Dung reaches the world! 🌟',
+    '🚢 Smooth sailing ahead,\nDai Dung Shipyard\nconquers the ocean! ⚓',
+    '🌺 Spring brings wealth,\nDai Dung shines across continents! 🎆',
+  ];
   function openEnvelope(){
+    const msgs = currentLang==='vi' ? msgsVI : msgsEN;
     document.getElementById('luckyMsg').innerText=msgs[Math.floor(Math.random()*msgs.length)];
     document.getElementById('luckyOverlay').classList.add('show');
     for(let i=0;i<5;i++) setTimeout(launchFirework,i*280);
