@@ -414,22 +414,30 @@
 
   function launchFirework(){
     const fw=document.createElement('div');fw.className='firework';
-    fw.style.left=(10+Math.random()*80)+'%';fw.style.top=(10+Math.random()*40)+'%';
-    const colors=['#FFD700','#FF6B35','#FF85A1','#fff','#FF4444','#00FF88','#44AAFF'];
-    const n=13+Math.floor(Math.random()*8);
+    fw.style.left=(5+Math.random()*90)+'%';fw.style.top=(5+Math.random()*50)+'%';
+    const colors=['#FFD700','#FF6B35','#FF85A1','#fff','#FF4444','#00FF88','#44AAFF','#FF00FF','#00FFFF','#FFA500'];
+    const n=20+Math.floor(Math.random()*15);
     for(let i=0;i<n;i++){
       const p=document.createElement('div');
-      Object.assign(p.style,{position:'absolute',width:'3.5px',height:'3.5px',borderRadius:'50%'});
-      const a=(i/n)*360,d=42+Math.random()*60;
+      const sz=2.5+Math.random()*3;
+      Object.assign(p.style,{position:'absolute',width:sz+'px',height:sz+'px',borderRadius:'50%'});
+      const a=(i/n)*360,d=50+Math.random()*80;
       const dx=Math.cos(a*Math.PI/180)*d,dy=Math.sin(a*Math.PI/180)*d;
       const c=colors[Math.floor(Math.random()*colors.length)];
-      p.style.background=c;p.style.boxShadow=`0 0 5px ${c}`;
-      p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(0)`,opacity:0}],{duration:1150+Math.random()*450,easing:'ease-out',fill:'forwards'});
+      p.style.background=c;p.style.boxShadow=`0 0 ${4+Math.random()*6}px ${c}`;
+      p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${dx}px,${dy}px) scale(0)`,opacity:0}],{duration:900+Math.random()*600,easing:'ease-out',fill:'forwards'});
       fw.appendChild(p);
     }
-    document.body.appendChild(fw);setTimeout(()=>fw.remove(),2100);
+    document.body.appendChild(fw);setTimeout(()=>fw.remove(),2000);
   }
-  setInterval(launchFirework,1900);setTimeout(launchFirework,450);setTimeout(launchFirework,1150);
+  // Rapid fire on load
+  for(let i=0;i<8;i++) setTimeout(launchFirework,i*250);
+  // Continuous fireworks - multiple per interval
+  setInterval(()=>{
+    launchFirework();
+    setTimeout(launchFirework,300);
+    if(Math.random()>0.4) setTimeout(launchFirework,600);
+  },1200);
 
   document.addEventListener('click',e=>{
     const b=document.createElement('div');b.className='click-burst';
