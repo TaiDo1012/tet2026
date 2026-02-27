@@ -398,6 +398,11 @@
   </p>
 </footer>
 
+<!-- Music - Auto play -->
+<audio id="bgMusic" loop preload="auto" autoplay>
+  <source src="https://drive.google.com/uc?export=download&id=1zKmuUfvymbUgHXCLccpCvxqO3_htWftj" type="audio/mpeg">
+</audio>
+
 <!-- Lucky Overlay -->
 <div class="lucky-overlay" id="luckyOverlay" onclick="closeEnvelope(event)">
   <div class="lucky-envelope">
@@ -408,6 +413,24 @@
 </div>
 
 <script>
+  /* === Music Auto Play === */
+  const bgMusic = document.getElementById('bgMusic');
+  bgMusic.volume = 0.5;
+  // Try autoplay immediately
+  bgMusic.play().catch(()=>{});
+  // Fallback: play on any user interaction
+  function forcePlay(){
+    bgMusic.play().catch(()=>{});
+    document.removeEventListener('click',forcePlay);
+    document.removeEventListener('touchstart',forcePlay);
+    document.removeEventListener('scroll',forcePlay);
+    document.removeEventListener('keydown',forcePlay);
+  }
+  document.addEventListener('click',forcePlay);
+  document.addEventListener('touchstart',forcePlay);
+  document.addEventListener('scroll',forcePlay);
+  document.addEventListener('keydown',forcePlay);
+
   /* === Effects === */
   for(let i=0;i<24;i++){const p=document.createElement('div');p.className='petal';p.style.left=Math.random()*100+'%';p.style.animationDuration=(5+Math.random()*8)+'s';p.style.animationDelay=Math.random()*10+'s';const s=(7+Math.random()*9)+'px';p.style.width=p.style.height=s;document.body.appendChild(p)}
   for(let i=0;i<30;i++){const s=document.createElement('div');s.className='sparkle';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*4+'s';s.style.animationDuration=(1.5+Math.random()*2)+'s';s.style.width=s.style.height=(2+Math.random()*3.5)+'px';document.body.appendChild(s)}
