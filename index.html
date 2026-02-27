@@ -135,7 +135,7 @@
     min-height: 100vh; width: 100%;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    padding: 80px 16px 36px; text-align: center;
+    padding: 40px 16px 36px; text-align: center;
   }
   .hero-logo {
     width: clamp(140px, 24vw, 260px); height: auto;
@@ -307,13 +307,7 @@
 
   /* === RESPONSIVE === */
   @media (max-width: 600px) {
-    .top-nav { padding: 8px 12px; }
-    .nav-logo { height: 34px; }
-    .nav-brand .brand-name { font-size: .8rem; }
-    .nav-brand .group-label { font-size: .45rem; letter-spacing: 1px; }
-    .nav-home-btn { padding: 6px 12px; font-size: .72rem; }
-    .nav-home-btn .btn-label { display: none; }
-    .hero { padding: 68px 12px 22px; }
+    .hero { padding: 20px 12px 22px; }
     .hero-logo { width: clamp(110px, 38vw, 180px); }
     .frame { padding: 24px 14px; }
     .wishes-grid { grid-template-columns: 1fr; gap: 10px; }
@@ -326,25 +320,7 @@
 
 <div class="bg-layer"></div>
 
-<!-- Nav -->
-<nav class="top-nav">
-  <div class="nav-logo-group">
-    <img
-      src="https://lh3.googleusercontent.com/d/1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0"
-      alt="Đại Dũng Logo"
-      class="nav-logo"
-      onerror="this.src='https://drive.google.com/uc?export=view&id=1wHFrrVuLENRVYIgyQjWddZv4UGAMCnp0'"
-    >
-    <div class="nav-brand">
-      <div class="group-label">Tập Đoàn Kết Cấu Thép Đại Dũng</div>
-      <div class="brand-name">DAI DUNG <span>SHIPYARD</span></div>
-    </div>
-  </div>
-  <a href="https://sites.google.com/daidung.vn/daidung-vungtau/trang-ch%E1%BB%A7" class="nav-home-btn" target="_top" onclick="goHome(event)" title="Trang Chủ">
-    <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-    <span class="btn-label">Trang Chủ</span>
-  </a>
-</nav>
+<!-- Nav removed -->
 
 <!-- Lanterns -->
 <div class="lantern-container">
@@ -418,8 +394,6 @@
   <p>
     🏮 Chúc Mừng Năm Mới Bính Ngọ 2026 🏮<br>
     <strong style="color:var(--warm-gold)">Dai Dung Shipyard</strong> — Tập Đoàn Kết Cấu Thép Đại Dũng<br>
-    <a href="https://sites.google.com/daidung.vn/daidung-vungtau/trang-ch%E1%BB%A7" target="_top" onclick="goHome(event)">🏠 Trang Chủ</a>
-    &nbsp;·&nbsp;
     <a href="https://daidung.com" target="_blank">daidung.com</a>
   </p>
 </footer>
@@ -434,19 +408,6 @@
 </div>
 
 <script>
-  /* === Navigate Home (escape iframe) === */
-  const HOME_URL = 'https://sites.google.com/daidung.vn/daidung-vungtau/trang-ch%E1%BB%A7';
-  function goHome(e) {
-    e.preventDefault();
-    // Try multiple methods to break out of iframe
-    try { window.top.location.href = HOME_URL; return; } catch(err) {}
-    try { window.parent.location.href = HOME_URL; return; } catch(err) {}
-    try { window.open(HOME_URL, '_top'); return; } catch(err) {}
-    try { window.open(HOME_URL, '_parent'); return; } catch(err) {}
-    // Fallback: open in new tab
-    window.open(HOME_URL, '_blank');
-  }
-
   /* === Effects === */
   for(let i=0;i<24;i++){const p=document.createElement('div');p.className='petal';p.style.left=Math.random()*100+'%';p.style.animationDuration=(5+Math.random()*8)+'s';p.style.animationDelay=Math.random()*10+'s';const s=(7+Math.random()*9)+'px';p.style.width=p.style.height=s;document.body.appendChild(p)}
   for(let i=0;i<30;i++){const s=document.createElement('div');s.className='sparkle';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDelay=Math.random()*4+'s';s.style.animationDuration=(1.5+Math.random()*2)+'s';s.style.width=s.style.height=(2+Math.random()*3.5)+'px';document.body.appendChild(s)}
